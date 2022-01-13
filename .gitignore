@@ -1,0 +1,11 @@
+/vendor
+/build
+/config/tmp.php
+.idea
+package-lock.json
+.DS_Store
+Thumbs.db
+composer.lock
+.phpunit.result.cache
+.swp
+*.map

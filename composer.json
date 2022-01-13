@@ -1,0 +1,34 @@
+{
+    "name": "whitecube/laravel-prices",
+    "description": "Manage acquisition, selling & renting prices for products and services in your Laravel Application",
+    "authors": [
+        {
+            "name": "Whitecube",
+            "email": "hello@whitecube.be"
+        },
+        {
+            "name": "Toon Van den Bos",
+            "email": "toon@whitecube.be"
+        },
+        {
+            "name": "Adrien Leloup",
+            "email": "adrien@whitecube.be"
+        }
+    ],
+    "require": {
+        "whitecube/php-prices": "^2.1",
+        "illuminate/support": "^8.79"
+    },
+    "autoload": {
+        "psr-4": {
+            "Whitecube\\LaravelPrices\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Whitecube\\LaravelPrices\\LaravelPricesServiceProvider"
+            ]
+        }
+    }
+}
