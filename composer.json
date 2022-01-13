@@ -1,6 +1,16 @@
 {
     "name": "whitecube/laravel-prices",
     "description": "Manage acquisition, selling & renting prices for products and services in your Laravel Application",
+    "keywords": [
+        "whitecube",
+        "laravel",
+        "prices",
+        "e-commerce",
+        "products",
+        "services",
+        "pricing",
+        "history"
+    ],
     "authors": [
         {
             "name": "Whitecube",
