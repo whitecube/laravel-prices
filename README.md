@@ -16,7 +16,7 @@ To achieve that, the package will migrate a `prices` table which is used to stor
 This documentation will use a fake `Product` model as an example, however the scope of this package is larger than that. 
 
 ## Usage
-Add the `HasPrice` trait to your Product model.
+Add the `HasPrices` trait to your Product model.
 
 ```php
 <?php
