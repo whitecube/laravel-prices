@@ -20,6 +20,7 @@ class CreatePricesTable extends Migration {
             $table->integer('amount');
             $table->string('currency');
             $table->timestamp('activated_at')->nullable();
+            $table->timestamps();
 
             $table->index(['priceable_type', 'priceable_id']);
         });
