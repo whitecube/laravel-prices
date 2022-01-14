@@ -4,6 +4,10 @@
          bootstrap="vendor/autoload.php"
          colors="true"
 >
+    <php>
+        <env name="APP_KEY" value="CXIWUAvnKxmbBSjGVIAckfSr28smET5F"/>
+        <env name="DB_CONNECTION" value="testing"/>
+    </php>
     <testsuites>
         <testsuite name="Test Suite">
             <directory suffix="Test.php">./tests</directory>

@@ -1,5 +1,8 @@
 <?php
 
+use Whitecube\LaravelPrices\Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -11,7 +14,8 @@
 |
 */
 
-// uses(Tests\TestCase::class)->in('Feature');
+uses(TestCase::class)->in('Feature');
+uses(RefreshDatabase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
