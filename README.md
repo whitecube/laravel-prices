@@ -35,7 +35,7 @@ This unlocks the whole functionality of this package for that model. Here are th
 ### Setting a price
 
 ```php
-$product->price = new Price(amount: 50, currency: 'eur');
+$product->price = new Price(amount: 50, currency: 'EUR');
 ```
 
 You can pass additional arguments, such as the type (defaults to selling, more on this later) and the moment the price needs to come into effect.
@@ -43,7 +43,7 @@ You can pass additional arguments, such as the type (defaults to selling, more o
 ```php
 $product->price = new Price(
   amount: 50, 
-  currency: 'eur', 
+  currency: 'EUR', 
   type: 'selling', 
   activated_at: now()->addWeek()
 );
@@ -75,3 +75,26 @@ To access that manually, call :
 ```php
 $buying_price->toMoney();
 ```
+
+### Available scopes
+
+`current()`
+
+Filters the query to only return the current price model.
+
+```php
+$product->prices()->current()->first();
+```
+
+--- 
+
+`effectiveAt($date)`
+
+Filters the query to only return the price model that was active at the given time (accepts a Carbon instance)
+
+```php
+$product->prices()->effectiveAt(now()->subWeek())->first();
+```
+
+
+
