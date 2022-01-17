@@ -15,7 +15,7 @@ class Price extends Model
 
     public $timestamps = ['activated_at'];
 
-    protected $fillable = ['id', 'type', 'amount', 'currency', 'activated_at'];
+    protected $guarded = [];
 
     protected $casts = [
         'amount' => 'integer'
@@ -67,7 +67,17 @@ class Price extends Model
 
     public function scopeCurrent($query)
     {
-        return $query->whereDate('activated_at', '<', now())->latest();
+        return $this->scopeEffectiveAt($query, now());
+    }
+
+    public function scopeEffectiveAt($query, DateTime $date)
+    {
+        return $query->whereNotNull('activated_at')->latest('activated_at')->whereDate('activated_at', '<', $date);
+    }
+
+    public function scopeOneOffs($query)
+    {
+        return $query->latest()->whereNull('activated_at');
     }
 
     public function toObject()
