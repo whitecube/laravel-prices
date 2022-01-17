@@ -13,8 +13,7 @@ This package lets you attach prices to anything you want, and keeps a history of
 
 To achieve that, the package will migrate a `prices` table which is used to store every price change that occurs on your priceable items _(such as products or services)_. When you access your item's price, the most recent result in that table will be returned.
 
-This documentation will use a fake `Product` model as an example, however the scope of this package is larger than that. 
-
+This documentation will use a fake `Product` model as an example, however you can link these prices to anything you want.
 ## Usage
 Add the `HasPrices` trait to your Product model.
 
