@@ -67,10 +67,10 @@ This means it converts the price into "minor units" (aka cents) before storage i
 
 ```php
 $product->price = new Price(
-  minor: 5000, 
-  currency: 'EUR', 
-  type: 'selling', 
-  activated_at: now()->addWeek()
+    minor: 5000, 
+    currency: 'EUR', 
+    type: 'selling', 
+    activated_at: now()->addWeek()
 );
 ```
 
