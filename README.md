@@ -40,6 +40,8 @@ $product->price = new Price(amount: 50, currency: 'EUR');
 You can pass additional arguments, such as the type (defaults to selling, more on this later) and the moment the price needs to come into effect.
 
 ```php
+use Whitecube\LaravelPrices\Models\Price;
+
 $product->price = new Price(
   amount: 50, 
   currency: 'EUR', 
@@ -47,8 +49,18 @@ $product->price = new Price(
   activated_at: now()->addWeek()
 );
 ```
+or if you want to avoid the `use` statement
 
-It's important to note that this uses [`whitecube/php-prices`](https://github.com/whitecube/php-prices) under the hood. This allows you to later do accurate calculations with your prices, without running into problems with floating point number precision.
+```php
+$product->setPrice(
+  amount: 50, 
+  currency: 'EUR', 
+  type: 'selling', 
+  activated_at: now()->addWeek()
+);
+```
+
+It's important to note that this package uses [`whitecube/php-prices`](https://github.com/whitecube/php-prices) under the hood. This allows you to later do accurate calculations with your prices, without running into problems with floating point number precision.
 
 This means it converts the price into "minor units" (aka cents) before storage in the database. The value you specify when creating a new price can be either in major or minor units. To define a price directly in minor units, use the `minor` argument instead of `amount`:
 
@@ -84,6 +96,12 @@ To access that manually, call :
 $buying_price->toObject();
 ```
 
+### How to handle one-off prices
+
+The main way to use prices with this package is to use it as a chronological history table of all the prices for a specific item. This means you should define the `activated_at` attribute when creating the price so that the system can accurately make a decision on whether or not it should consider the price when you query it.
+
+However, you may sometimes need to specify a special one-off price for an item, without it getting applied automatically every time. This can be done easily by leaving out or setting the `activated_at` attribute to null, and storing the price's ID where you need to have a reference to it. When you do so, these prices will never be returned when using time-based scopes (such as `current()` or `effectiveAt()`).
+
 ### Available scopes
 
 `current()`
@@ -102,6 +120,15 @@ Filters the query to only return the price model that was active at the given ti
 
 ```php
 $product->prices()->effectiveAt(now()->subWeek())->first();
+```
+
+--- 
+
+`oneOffs()`
+
+Filters the query to only return the one-off prices (activated_at === null)
+```php
+$product->prices()->oneOffs()->get();
 ```
 
 
