@@ -49,14 +49,23 @@ $product->price = new Price(
 );
 ```
 
-It's important to note that this uses [`brick/money`](https://github.com/brick/money) under the hood. This allows you to later do accurate calculations with your prices, without running into problems with floating point number precision.
+It's important to note that this uses [`whitecube/php-prices`](https://github.com/whitecube/php-prices) under the hood. This allows you to later do accurate calculations with your prices, without running into problems with floating point number precision.
 
-This means it converts the price into "minor units" (aka cents) before storage in the database. To be clear, the value you specify when creating a new price is **NOT** the value in minor units. The package will do the conversion on its own when necessary.
+This means it converts the price into "minor units" (aka cents) before storage in the database. The value you specify when creating a new price can be either in major or minor units. To define a price directly in minor units, use the `minor` argument instead of `amount`:
 
+
+```php
+$product->price = new Price(
+  minor: 5000, 
+  currency: 'EUR', 
+  type: 'selling', 
+  activated_at: now()->addWeek()
+);
+```
 
 ### Getting the current selling price
 
-The quickest and easiest way, getting a `Brick\Money\Money` instance so you're ready to do accurate calculations with it.
+The quickest and easiest way, getting a `Whitecube\Price\Price` instance so you're ready to do accurate calculations with it.
 ```php
 $price = $product->price;
 ```
@@ -69,11 +78,11 @@ The above example does a little magic via an accessor method on the trait to mak
 $buying_price = $product->prices()->current()->where('type', 'buying')->first();
 ```
 
-Do note that this returns an instance of the `Whitecube\LaravelPrices\Models\Price` model, not a `Brick\Money\Money` instance. 
+Do note that this returns an instance of the `Whitecube\LaravelPrices\Models\Price` model, not a `Whitecube\Price\Price` instance. 
 To access that manually, call :
 
 ```php
-$buying_price->toMoney();
+$buying_price->toObject();
 ```
 
 ### Available scopes
