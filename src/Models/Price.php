@@ -5,8 +5,9 @@ namespace Whitecube\LaravelPrices\Models;
 use DateTime;
 use Brick\Money\Money;
 use Illuminate\Database\Eloquent\Model;
-use Whitecube\LaravelPrices\Concerns\HasUuid;
 use Whitecube\Price\Price as PhpPrices;
+use Whitecube\LaravelPrices\Concerns\HasUuid;
+use Whitecube\LaravelPrices\Exceptions\PriceValueNotDefinedException;
 
 class Price extends Model
 {
@@ -23,7 +24,7 @@ class Price extends Model
         string $type = null,
         DateTime $activated_at = null
     ) {
-        if (! is_null($arguments)) {
+        if (! is_null($arguments) && $arguments !== []) {
             return $this->constructFromArgumentsArray($arguments);
         }
 
@@ -43,15 +44,13 @@ class Price extends Model
     {
         $amount = $arguments['amount'] ?? null;
         $minor = $arguments['minor'] ?? null;
+        $currency = $arguments['currency'];
 
-        if (! is_null($amount) && is_null($minor)) {
-            // Parse the price and store the minor value
-            $arguments['amount'] = Money::of($arguments['amount'], $arguments['currency'])->getMinorAmount()->toInt();
-        } else if (is_null($amount) && ! is_null($minor)) {
-            $arguments['amount'] = $arguments['minor'];
-        } else if (is_null($amount) && is_null($minor)) {
-            throw new \Exception('No value provided for price object');
+        if (is_null($amount) && is_null($minor)) {
+            throw new PriceValueNotDefinedException('No value provided for price object.');
         }
+
+        $arguments['amount'] = $minor ?? Money::of($amount, $currency)->getMinorAmount()->toInt();
 
         return parent::__construct($arguments);
     }
@@ -59,6 +58,11 @@ class Price extends Model
     public function priceable()
     {
         return $this->morphTo();
+    }
+
+    public function scopeCurrent($query)
+    {
+        return $query->whereDate('activated_at', '<', now())->latest();
     }
 
     public function toObject()
