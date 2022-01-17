@@ -43,20 +43,20 @@ You can pass additional arguments, such as the type (defaults to selling, more o
 use Whitecube\LaravelPrices\Models\Price;
 
 $product->price = new Price(
-  amount: 50, 
-  currency: 'EUR', 
-  type: 'selling', 
-  activated_at: now()->addWeek()
+    amount: 50, 
+    currency: 'EUR', 
+    type: 'selling', 
+    activated_at: now()->addWeek()
 );
 ```
 or if you want to avoid the `use` statement
 
 ```php
 $product->setPrice(
-  amount: 50, 
-  currency: 'EUR', 
-  type: 'selling', 
-  activated_at: now()->addWeek()
+    amount: 50, 
+    currency: 'EUR', 
+    type: 'selling', 
+    activated_at: now()->addWeek()
 );
 ```
 
