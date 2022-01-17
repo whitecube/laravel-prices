@@ -124,12 +124,11 @@ $product->prices()->effectiveAt(now()->subWeek())->first();
 
 --- 
 
-`effectiveAt($date)`
+`oneOffs()`
 
-Filters the query to only return the price model that was active at the given time (accepts a Carbon instance)
-
+Filters the query to only return the one-off prices (activated_at === null)
 ```php
-$product->prices()->effectiveAt(now()->subWeek())->first();
+$product->prices()->oneOffs()->get();
 ```
 
 
