@@ -14,7 +14,12 @@ class Price extends Model
     use HasUuid;
 
     public $timestamps = ['activated_at'];
+
     protected $fillable = ['id', 'type', 'amount', 'currency', 'activated_at'];
+
+    protected $casts = [
+        'amount' => 'integer'
+    ];
 
     public function __construct(
         array $arguments = null,
