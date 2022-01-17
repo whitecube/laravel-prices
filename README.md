@@ -126,7 +126,7 @@ $product->prices()->effectiveAt(now()->subWeek())->first();
 
 `oneOffs()`
 
-Filters the query to only return the one-off prices (activated_at === null)
+Filters the query to only return the one-off prices (`activated_at === null)
 ```php
 $product->prices()->oneOffs()->get();
 ```
