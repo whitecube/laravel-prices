@@ -25,7 +25,7 @@ trait HasPrices
      */
     public function price()
     {
-        return $this->morphOne(Price::class, 'priceable')->where('type', 'selling')->current();
+        return $this->morphOne(Price::class, 'priceable')->where('type', $this->getDefaultPriceType())->current();
     }
 
     /**
@@ -73,4 +73,30 @@ trait HasPrices
 
         return $this;
     }
+
+    /**
+     * Get the price, as a model or as a whitecube/php-prices instance
+     *
+     * @param boolean $asModel
+     * @return void
+     */
+    public function getPrice(bool $asModel = false)
+    {
+        if (! $asModel) {
+            return $this->price;
+        }
+
+        return $this->price()->first();
+    }
+
+    /**
+     * Get the default price type
+     *
+     * @return string
+     */
+    protected function getDefaultPriceType(): string
+    {
+        return 'selling';
+    }
+
 }
