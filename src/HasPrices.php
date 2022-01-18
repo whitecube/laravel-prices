@@ -3,7 +3,6 @@
 namespace Whitecube\LaravelPrices;
 
 use DateTime;
-use Whitecube\Price\Price as PhpPrice;
 use Illuminate\Database\Eloquent\Model;
 use Whitecube\LaravelPrices\Models\Price;
 
@@ -17,6 +16,26 @@ trait HasPrices
     public function prices()
     {
         return $this->morphMany(Price::class, 'priceable');
+    }
+
+    /**
+     * The current price model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function price()
+    {
+        return $this->morphOne(Price::class, 'priceable')->where('type', 'selling')->current();
+    }
+
+    /**
+     * Easy accessor to get the current price as a whitecube/php-prices object
+     *
+     * @return \Whitecube\Price\Price|null
+     */
+    public function getPriceAttribute()
+    {
+        return $this->price()->first()?->toObject();
     }
 
     /**
@@ -53,17 +72,5 @@ trait HasPrices
         $this->price = new Price($arguments, $amount, $minor, $currency, $type, $activated_at);
 
         return $this;
-    }
-
-    /**
-     * Easy accessor to get the current price
-     *
-     * @return \Whitecube\Price\Price|null
-     */
-    public function getPriceAttribute(): ?PhpPrice
-    {
-        $model = $this->prices()->current()->first();
-
-        return $model?->toObject();
     }
 }
