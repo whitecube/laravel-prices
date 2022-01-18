@@ -72,7 +72,7 @@ class Price extends Model
 
     public function scopeEffectiveAt($query, DateTime $date)
     {
-        return $query->whereNotNull('activated_at')->latest('activated_at')->whereDate('activated_at', '<', $date);
+        return $query->whereNotNull('activated_at')->latest('activated_at')->where('activated_at', '<', $date);
     }
 
     public function scopeOneOffs($query)
