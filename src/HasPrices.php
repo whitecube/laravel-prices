@@ -78,7 +78,7 @@ trait HasPrices
      * Get the price, as a model or as a whitecube/php-prices instance
      *
      * @param boolean $asModel
-     * @return void
+     * @return \Whitecube\Price\Price|\Whitecube\LaravelPrices\Models\Price
      */
     public function getPrice(bool $asModel = false)
     {

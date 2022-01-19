@@ -5,7 +5,7 @@ namespace Whitecube\LaravelPrices\Models;
 use DateTime;
 use Brick\Money\Money;
 use Illuminate\Database\Eloquent\Model;
-use Whitecube\Price\Price as PhpPrices;
+use Whitecube\Price\Price as PriceObject;
 use Whitecube\LaravelPrices\Concerns\HasUuid;
 use Whitecube\LaravelPrices\Exceptions\PriceValueNotDefinedException;
 
@@ -80,8 +80,8 @@ class Price extends Model
         return $query->latest()->whereNull('activated_at');
     }
 
-    public function toObject()
+    public function toObject(): PriceObject
     {
-        return PhpPrices::ofMinor($this->amount, $this->currency);
+        return PriceObject::ofMinor($this->amount, $this->currency);
     }
 }
