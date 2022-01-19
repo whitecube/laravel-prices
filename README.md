@@ -81,6 +81,8 @@ The quickest and easiest way, getting a `Whitecube\Price\Price` instance so you'
 $price = $product->price;
 ```
 
+By default, this will return the latest price that has the `selling` type, but you can change that by overriding the `getDefaultPriceType` method on your class. It must return a string that corresponds to the price type you want to use by default for that priceable item class.
+
 ### Accessing the relationship manually
 
 The above example does a little magic via an accessor method on the trait to make the most common use case easier, but behind the scenes it's a simple query on a relation. You can query this relation yourself when necessary (and with the help of the `current()` scope, it will only return the currently active price).
