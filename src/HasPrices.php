@@ -35,6 +35,8 @@ trait HasPrices
      */
     public function getPriceAttribute()
     {
+        $this->loadMissing('price');
+
         return $this->getRelation('price')?->toObject();
     }
 
