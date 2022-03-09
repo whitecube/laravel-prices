@@ -30,34 +30,29 @@ class Price extends Model
         DateTime $activated_at = null
     ) {
         if (! is_null($arguments) && $arguments !== []) {
-            return $this->constructFromArgumentsArray($arguments);
-        }
-
-        if ((! is_null($amount) && ! is_null($currency)) && is_null($minor)) {
-            $amount = Money::of($amount, $currency)->getMinorAmount()->toInt();
+            return parent::__construct($arguments);
         }
 
         parent::__construct([
-            'amount' => $minor ?? $amount,
+            'minor' => $minor,
+            'amount' => $amount,
             'currency' => $currency,
             'type' => $type,
             'activated_at' => $activated_at
         ]);
     }
 
-    private function constructFromArgumentsArray($arguments)
+    public function fill(array $attributes)
     {
-        $amount = $arguments['amount'] ?? null;
-        $minor = $arguments['minor'] ?? null;
-        $currency = $arguments['currency'];
-
-        if (is_null($amount) && is_null($minor)) {
-            throw new PriceValueNotDefinedException('No value provided for price object.');
+        if ($minor = $attributes['minor'] ?? null) {
+            $attributes['amount'] = $minor;
+        } else if (($amount = $attributes['amount'] ?? null) && ($currency = $attributes['currency'] ?? null)) {
+            $attributes['amount'] = Money::of($amount, $currency)->getMinorAmount()->toInt();
         }
 
-        $arguments['amount'] = $minor ?? Money::of($amount, $currency)->getMinorAmount()->toInt();
+        unset($attributes['minor']);
 
-        return parent::__construct($arguments);
+        return parent::fill($attributes);
     }
 
     public function priceable()
