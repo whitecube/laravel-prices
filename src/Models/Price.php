@@ -79,4 +79,18 @@ class Price extends Model
     {
         return PriceObject::ofMinor($this->amount, $this->currency);
     }
+
+    public function getStatusAttribute()
+    {
+        if($this->activated_at > now()) {
+            return 'programmed';
+        }
+
+        $current = $this->priceable->price()->first();
+        if($current->id == $this->id) {
+            return 'current';
+        }
+
+        return 'passed';
+    }
 }
