@@ -27,7 +27,7 @@
     ],
     "require": {
         "whitecube/php-prices": "^2.2",
-        "illuminate/support": "^8.0|^9.0"
+        "illuminate/support": "^8.0|^9.0|^10.0"
     },
     "autoload": {
         "psr-4": {
@@ -44,7 +44,7 @@
     },
     "require-dev": {
         "pestphp/pest": "^1.21",
-        "orchestra/testbench": "^6.24|^7.0"
+        "orchestra/testbench": "^6.24|^7.0|^8.0"
     },
     "config": {
         "allow-plugins": {
