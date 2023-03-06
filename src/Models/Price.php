@@ -7,18 +7,17 @@ use Brick\Money\Money;
 use Illuminate\Database\Eloquent\Model;
 use Whitecube\Price\Price as PriceObject;
 use Whitecube\LaravelPrices\Concerns\HasUuid;
-use Whitecube\LaravelPrices\Exceptions\PriceValueNotDefinedException;
+use Whitecube\LaravelPrices\Enums\PriceStatus;
 
 class Price extends Model
 {
     use HasUuid;
 
-    public $timestamps = ['activated_at'];
-
     protected $guarded = [];
 
     protected $casts = [
-        'amount' => 'integer'
+        'amount' => 'integer',
+        'activated_at' => 'datetime',
     ];
 
     public function __construct(
@@ -80,17 +79,18 @@ class Price extends Model
         return PriceObject::ofMinor($this->amount, $this->currency);
     }
 
-    public function getStatusAttribute()
+    public function getStatusAttribute(): PriceStatus
     {
         if($this->activated_at > now()) {
-            return 'programmed';
+            return PriceStatus::SCHEDULED;
         }
 
-        $current = $this->priceable->price()->first();
-        if($current->id == $this->id) {
-            return 'current';
+        $current = $this->priceable->price()->current()->first();
+
+        if ($current->id == $this->id) {
+            return PriceStatus::CURRENT;
         }
 
-        return 'passed';
+        return PriceStatus::EXPIRED;
     }
 }
