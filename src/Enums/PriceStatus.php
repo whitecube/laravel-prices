@@ -2,9 +2,9 @@
 
 namespace Whitecube\LaravelPrices\Enums;
 
-enum PriceStatus
+enum PriceStatus: string
 {
-    case SCHEDULED;
-    case CURRENT;
-    case EXPIRED;
+    case SCHEDULED = 'scheduled';
+    case CURRENT = 'current';
+    case EXPIRED = 'expired';
 }
