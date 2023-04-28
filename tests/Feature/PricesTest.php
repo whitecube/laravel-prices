@@ -1,15 +1,10 @@
 <?php
 
 use Whitecube\Price\Price as PhpPrice;
-use Whitecube\LaravelPrices\Models\Price;
 use Whitecube\LaravelPrices\Tests\Fixtures\PriceableItem;
-
-beforeEach(function () {
-    config(['price.model' => Price::class]);
-});
+use Whitecube\LaravelPrices\Models\Price;
 
 test('a price can be set on a priceable item via the relationship', function() {
-    $className = config('price.model');
     $priceable_item = new PriceableItem(['id' => '1234']);
 
     $price = $priceable_item->prices()->create([
@@ -21,7 +16,7 @@ test('a price can be set on a priceable item via the relationship', function() {
 
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf($className, $price);
+    $this->assertInstanceOf(Price::class, $price);
     $this->assertSame($priceable_item->id, $price->priceable_id);
     $this->assertSame(PriceableItem::class, $price->priceable_type);
     $this->assertSame('selling', $price->type);
@@ -34,9 +29,8 @@ test('a price can be set on a priceable item via the relationship', function() {
 
 test('a price can be set on a priceable item via the setter', function() {
     $priceable_item = new PriceableItem(['id' => 1234]);
-    $className = config('price.model');
 
-    $price = new $className([
+    $price = new Price([
         'type' => 'selling',
         'amount' => 123,
         'currency' => 'EUR',
@@ -48,7 +42,7 @@ test('a price can be set on a priceable item via the setter', function() {
     $price = $priceable_item->prices()->current()->first();
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf($className, $price);
+    $this->assertInstanceOf(Price::class, $price);
     $this->assertSame((string) $priceable_item->id, $price->priceable_id);
     $this->assertSame(PriceableItem::class, $price->priceable_type);
     $this->assertSame('selling', $price->type);
@@ -61,7 +55,6 @@ test('a price can be set on a priceable item via the setter', function() {
 
 test('a price can be set on a priceable item via the setPrice method', function() {
     $priceable_item = new PriceableItem(['id' => 1234]);
-    $className = config('price.model');
 
     $priceable_item->setPrice(
         type: 'selling',
@@ -73,7 +66,7 @@ test('a price can be set on a priceable item via the setPrice method', function(
     $price = $priceable_item->prices()->current()->first();
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf($className, $price);
+    $this->assertInstanceOf(Price::class, $price);
     $this->assertSame((string) $priceable_item->id, $price->priceable_id);
     $this->assertSame(PriceableItem::class, $price->priceable_type);
     $this->assertSame('selling', $price->type);
@@ -85,8 +78,7 @@ test('a price can be set on a priceable item via the setPrice method', function(
 });
 
 test('a price instance can return a whitecube/php-prices object', function() {
-    $className = config('price.model');
-    $price = new $className(
+    $price = new Price(
         type: 'selling',
         amount: 123,
         currency: 'EUR',

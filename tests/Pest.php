@@ -17,6 +17,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(TestCase::class)->in('Feature');
 uses(RefreshDatabase::class)->in('Feature');
 
+beforeEach(function () {
+    config(['price.model' => Price::class]);
+});
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
