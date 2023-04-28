@@ -1,8 +1,8 @@
 <?php
 
 use Whitecube\Price\Price as PhpPrice;
-use Whitecube\LaravelPrices\Models\Price;
 use Whitecube\LaravelPrices\Tests\Fixtures\PriceableItem;
+use Whitecube\LaravelPrices\Models\Price;
 
 test('a price can be set on a priceable item via the relationship', function() {
     $priceable_item = new PriceableItem(['id' => '1234']);
@@ -13,6 +13,7 @@ test('a price can be set on a priceable item via the relationship', function() {
         'currency' => 'EUR',
         'activated_at' => now()->addWeek()
     ]);
+
 
     $this->assertNotNull($price);
     $this->assertInstanceOf(Price::class, $price);

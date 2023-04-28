@@ -3,7 +3,6 @@
 use Whitecube\LaravelPrices\Models\Price;
 use Whitecube\LaravelPrices\Tests\Fixtures\PriceableItem;
 
-
 test('the current scope can return the correct price', function() {
     $priceable_item = new PriceableItem(['id' => 1234]);
 

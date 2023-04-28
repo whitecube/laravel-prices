@@ -7,6 +7,22 @@ Manage acquisition, selling &amp; renting prices for products and services in yo
 composer require whitecube/laravel-prices
 ```
 
+## Configuration
+
+You can publish the config file by running this command:
+
+```shell
+php artisan vendor:publish --tag=prices-config 
+```
+
+Once your configuration file is created in `config/prices.php`, you can edit the Price model to a custom Price model by changing:
+
+```php
+return [
+    'model' => \App\Models\CustomPriceModel::class,
+];
+```
+
 ## Quick overview
 
 This package lets you attach prices to anything you want, and keeps a history of the price changes overtime.

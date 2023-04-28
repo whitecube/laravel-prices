@@ -4,7 +4,6 @@ namespace Whitecube\LaravelPrices;
 
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
-use Whitecube\LaravelPrices\Models\Price;
 
 trait HasPrices
 {
@@ -15,7 +14,7 @@ trait HasPrices
      */
     public function prices()
     {
-        return $this->morphMany(Price::class, 'priceable');
+        return $this->morphMany(config('prices.model'), 'priceable');
     }
 
     /**
@@ -25,13 +24,13 @@ trait HasPrices
      */
     public function price()
     {
-        return $this->morphOne(Price::class, 'priceable')->where('type', $this->getDefaultPriceType())->current();
+        return $this->morphOne(config('prices.model'), 'priceable')->where('type', $this->getDefaultPriceType())->current();
     }
 
     /**
      * Easy accessor to get the current price as a whitecube/php-prices object
      *
-     * @return \Whitecube\Price\Price|null
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function getPriceAttribute()
     {
@@ -43,10 +42,10 @@ trait HasPrices
     /**
      * Set (attach) a new price to this item
      *
-     * @param Price $price
+     * @param \Illuminate\Database\Eloquent\Model $price
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function setPriceAttribute(Price $price): Model
+    public function setPriceAttribute(Model $price): Model
     {
         return $this->prices()->save($price);
     }
@@ -71,7 +70,8 @@ trait HasPrices
         DateTime $activated_at = null
     ): static
     {
-        $this->price = new Price($arguments, $amount, $minor, $currency, $type, $activated_at);
+        $model = config('prices.model');
+        $this->price = new $model($arguments, $amount, $minor, $currency, $type, $activated_at);
 
         return $this;
     }
@@ -80,7 +80,7 @@ trait HasPrices
      * Get the price, as a model or as a whitecube/php-prices instance
      *
      * @param boolean $asModel
-     * @return \Whitecube\Price\Price|\Whitecube\LaravelPrices\Models\Price
+     * @return \Whitecube\Price\Price|\Illuminate\Database\Eloquent\Model
      */
     public function getPrice(bool $asModel = false)
     {
