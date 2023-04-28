@@ -2,8 +2,13 @@
 
 use Whitecube\LaravelPrices\Models\Price;
 
+beforeEach(function () {
+    config(['price.model' => Price::class]);
+});
+
 test('a price instance can be created with a constructor arguments array', function() {
-    $price = new Price([
+    $className = config('price.model');
+    $price = new $className([
         'type' => 'selling',
         'amount' => 123,
         'currency' => 'EUR',
@@ -11,14 +16,16 @@ test('a price instance can be created with a constructor arguments array', funct
     ]);
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf(Price::class, $price);
+    $this->assertInstanceOf($className, $price);
     $this->assertSame('selling', $price->type);
     $this->assertSame(12300, $price->amount);
     $this->assertSame('EUR', $price->currency);
 });
 
 test('a price instance can be created with named constructor arguments', function() {
-    $price = new Price(
+    $className = config('price.model');
+
+    $price = new $className(
         type: 'selling',
         amount: 123,
         currency: 'EUR',
@@ -26,14 +33,15 @@ test('a price instance can be created with named constructor arguments', functio
     );
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf(Price::class, $price);
+    $this->assertInstanceOf($className, $price);
     $this->assertSame('selling', $price->type);
     $this->assertSame(12300, $price->amount);
     $this->assertSame('EUR', $price->currency);
 });
 
 test('a price instance can be created from a minor value using a constructor arguments array', function() {
-    $price = new Price([
+    $className = config('price.model');
+    $price = new $className([
         'type' => 'selling',
         'minor' => 123,
         'currency' => 'EUR',
@@ -48,7 +56,8 @@ test('a price instance can be created from a minor value using a constructor arg
 });
 
 test('a price instance can be created from a minor value using named constructor arguments', function() {
-    $price = new Price(
+    $className = config('price.model');
+    $price = new $className(
         type: 'selling',
         minor: 123,
         currency: 'EUR',
@@ -56,7 +65,7 @@ test('a price instance can be created from a minor value using named constructor
     );
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf(Price::class, $price);
+    $this->assertInstanceOf($className, $price);
     $this->assertSame('selling', $price->type);
     $this->assertSame(123, $price->amount);
     $this->assertSame('EUR', $price->currency);

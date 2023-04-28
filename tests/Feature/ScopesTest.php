@@ -3,9 +3,13 @@
 use Whitecube\LaravelPrices\Models\Price;
 use Whitecube\LaravelPrices\Tests\Fixtures\PriceableItem;
 
+beforeEach(function () {
+    config(['price.model' => Price::class]);
+});
 
 test('the current scope can return the correct price', function() {
     $priceable_item = new PriceableItem(['id' => 1234]);
+    $className = config('price.model');
 
     $priceable_item->setPrice(
         type: 'selling',
@@ -31,13 +35,14 @@ test('the current scope can return the correct price', function() {
     $price = $priceable_item->prices()->current()->first();
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf(Price::class, $price);
+    $this->assertInstanceOf($className, $price);
     $this->assertSame((string) $priceable_item->id, $price->priceable_id);
     $this->assertSame(45600, $price->amount);
     $this->assertNotNull($price->activated_at);
 });
 
 test('the effectiveAt scope can return the correct price', function() {
+    $className = config('price.model');
     $priceable_item = new PriceableItem(['id' => 1234]);
 
     $priceable_item->setPrice(
@@ -65,7 +70,7 @@ test('the effectiveAt scope can return the correct price', function() {
     $price = $priceable_item->prices()->effectiveAt(now()->subDays(9))->first();
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf(Price::class, $price);
+    $this->assertInstanceOf($className, $price);
     $this->assertSame((string) $priceable_item->id, $price->priceable_id);
     $this->assertSame(12300, $price->amount);
     $this->assertNotNull($price->activated_at);
@@ -75,7 +80,7 @@ test('the effectiveAt scope can return the correct price', function() {
     $price = $priceable_item->prices()->effectiveAt(now()->subDays(6))->first();
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf(Price::class, $price);
+    $this->assertInstanceOf($className, $price);
     $this->assertSame((string) $priceable_item->id, $price->priceable_id);
     $this->assertSame(45600, $price->amount);
     $this->assertNotNull($price->activated_at);
@@ -85,13 +90,14 @@ test('the effectiveAt scope can return the correct price', function() {
     $price = $priceable_item->prices()->effectiveAt(now()->addWeeks(2))->first();
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf(Price::class, $price);
+    $this->assertInstanceOf($className, $price);
     $this->assertSame((string) $priceable_item->id, $price->priceable_id);
     $this->assertSame(78900, $price->amount);
     $this->assertNotNull($price->activated_at);
 });
 
 test('prices with activated_at = null are not considered when using time-based scopes', function() {
+    $className = config('price.model');
     $priceable_item = new PriceableItem(['id' => 1234]);
 
     $priceable_item->setPrice(
@@ -119,7 +125,7 @@ test('prices with activated_at = null are not considered when using time-based s
     $price = $priceable_item->prices()->effectiveAt(now()->subDays(9))->first();
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf(Price::class, $price);
+    $this->assertInstanceOf($className, $price);
     $this->assertSame((string) $priceable_item->id, $price->priceable_id);
     $this->assertSame(12300, $price->amount);
     $this->assertNotNull($price->activated_at);
@@ -129,7 +135,7 @@ test('prices with activated_at = null are not considered when using time-based s
     $price = $priceable_item->prices()->current()->first();
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf(Price::class, $price);
+    $this->assertInstanceOf($className, $price);
     $this->assertSame((string) $priceable_item->id, $price->priceable_id);
     $this->assertSame(12300, $price->amount);
     $this->assertNotNull($price->activated_at);
@@ -139,16 +145,17 @@ test('prices with activated_at = null are not considered when using time-based s
     $price = $priceable_item->prices()->effectiveAt(now()->addWeeks(2))->first();
 
     $this->assertNotNull($price);
-    $this->assertInstanceOf(Price::class, $price);
+    $this->assertInstanceOf($className, $price);
     $this->assertSame((string) $priceable_item->id, $price->priceable_id);
     $this->assertSame(78900, $price->amount);
     $this->assertNotNull($price->activated_at);
 });
 
 test('the oneOffs scope returns the correct prices', function() {
+    $className = config('price.model');
     $priceable_item = new PriceableItem(['id' => 1234]);
 
-    $priceable_item->price = new Price([
+    $priceable_item->price = new $className([
         'type' => 'selling',
         'amount' => 123,
         'currency' => 'EUR',
