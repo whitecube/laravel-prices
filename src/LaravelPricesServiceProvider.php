@@ -10,22 +10,16 @@ class LaravelPricesServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        if ($this->app->runningInConsole()) {
-            $this->publishConfig();
-        }
+        $this->publishes([
+            $this->getConfigPath() => config_path('prices.php')
+        ], 'prices-config');
 
-        if (!file_exists(config_path('prices.php'))) {
+        if (! file_exists(config_path('prices.php'))) {
             $this->mergeConfigFrom($this->getConfigPath(), 'prices');
         }
     }
 
-    private function publishConfig()
-    {
-        $path = $this->getConfigPath();
-        $this->publishes([$path => config_path('prices.php')], 'prices-config');
-    }
-
-    private function getConfigPath()
+    protected function getConfigPath(): string
     {
         return __DIR__ . '/../config/prices.php';
     }

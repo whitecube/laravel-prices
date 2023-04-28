@@ -70,8 +70,8 @@ trait HasPrices
         DateTime $activated_at = null
     ): static
     {
-        $className= config('prices.model');
-        $this->price = new $className($arguments, $amount, $minor, $currency, $type, $activated_at);
+        $model = config('prices.model');
+        $this->price = new $model($arguments, $amount, $minor, $currency, $type, $activated_at);
 
         return $this;
     }

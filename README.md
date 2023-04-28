@@ -9,7 +9,7 @@ composer require whitecube/laravel-prices
 
 ## Configuration
 
-You can publish the config file by running this command :
+You can publish the config file by running this command:
 
 ```shell
 php artisan vendor:publish --tag=prices-config 
@@ -19,7 +19,6 @@ Once your configuration file is created in `config/prices.php`, you can edit the
 
 ```php
 return [
-    // …
     'model' => \App\Models\CustomPriceModel::class,
 ];
 ```
