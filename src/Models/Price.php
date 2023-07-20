@@ -43,7 +43,9 @@ class Price extends Model
 
     public function fill(array $attributes)
     {
-        if ($minor = $attributes['minor'] ?? null) {
+        $minor = $attributes['minor'] ?? null;
+
+        if (! is_null($minor)) {
             $attributes['amount'] = $minor;
         } else if (($amount = $attributes['amount'] ?? null) && ($currency = $attributes['currency'] ?? null)) {
             $attributes['amount'] = Money::of($amount, $currency)->getMinorAmount()->toInt();

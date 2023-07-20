@@ -32,6 +32,22 @@ test('a price instance can be created with named constructor arguments', functio
     $this->assertSame('EUR', $price->currency);
 });
 
+test('a price instance can be created with a minor value of 0', function() {
+    $price = new Price(
+        type: 'selling',
+        minor: 0,
+        currency: 'EUR',
+        activated_at: now()->addWeek()
+    );
+
+    $this->assertNotNull($price);
+    $this->assertInstanceOf(Price::class, $price);
+    $this->assertSame('selling', $price->type);
+    $this->assertNotNull($price->amount);
+    $this->assertSame(0, $price->amount);
+    $this->assertSame('EUR', $price->currency);
+});
+
 test('a price instance can be created from a minor value using a constructor arguments array', function() {
     $price = new Price([
         'type' => 'selling',
