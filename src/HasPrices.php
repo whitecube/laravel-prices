@@ -24,7 +24,7 @@ trait HasPrices
      */
     public function price()
     {
-        return $this->morphOne(config('prices.model'), 'priceable')->where('type', $this->getDefaultPriceType())->current();
+        return $this->morphOne(config('prices.model'), 'priceable')->currentForType($this->getDefaultPriceType());
     }
 
     /**

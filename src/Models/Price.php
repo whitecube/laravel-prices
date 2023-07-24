@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Whitecube\Price\Price as PriceObject;
 use Whitecube\LaravelPrices\Concerns\HasUuid;
 use Whitecube\LaravelPrices\Enums\PriceStatus;
+use Illuminate\Database\Eloquent\Builder;
 
 class Price extends Model
 {
@@ -69,6 +70,11 @@ class Price extends Model
     public function scopeEffectiveAt($query, DateTime $date)
     {
         return $query->whereNotNull('activated_at')->latest('activated_at')->where('activated_at', '<=', $date);
+    }
+
+    public function scopeCurrentForType(Builder $query, string $type)
+    {
+        $query->where('type', $type)->current();
     }
 
     public function scopeOneOffs($query)
