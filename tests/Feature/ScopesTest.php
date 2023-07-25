@@ -36,6 +36,67 @@ test('the current scope can return the correct price', function() {
     $this->assertNotNull($price->activated_at);
 });
 
+test('the currentForType scope can return the correct price', function() {
+    $priceable_item = new PriceableItem(['id' => 1234]);
+
+    $priceable_item->setPrice(
+        type: 'selling',
+        amount: 123,
+        currency: 'EUR',
+        activated_at: now()->subWeeks(2)
+    );
+
+    $priceable_item->setPrice(
+        type: 'selling',
+        amount: 456,
+        currency: 'EUR',
+        activated_at: now()->subWeek()
+    );
+
+    $priceable_item->setPrice(
+        type: 'selling',
+        amount: 789,
+        currency: 'EUR',
+        activated_at: now()->addWeek()
+    );
+
+    $priceable_item->setPrice(
+        type: 'buying',
+        amount: 111,
+        currency: 'EUR',
+        activated_at: now()->subWeeks(2)
+    );
+
+    $priceable_item->setPrice(
+        type: 'buying',
+        amount: 222,
+        currency: 'EUR',
+        activated_at: now()->subWeek()
+    );
+
+    $priceable_item->setPrice(
+        type: 'buying',
+        amount: 333,
+        currency: 'EUR',
+        activated_at: now()->addWeek()
+    );
+
+    $sellingPrice = $priceable_item->prices()->currentForType('selling')->first();
+    $buyingPrice = $priceable_item->prices()->currentForType('buying')->first();
+
+    $this->assertNotNull($sellingPrice);
+    $this->assertInstanceOf(Price::class, $sellingPrice);
+    $this->assertSame((string) $priceable_item->id, $sellingPrice->priceable_id);
+    $this->assertSame(45600, $sellingPrice->amount);
+    $this->assertNotNull($sellingPrice->activated_at);
+
+    $this->assertNotNull($buyingPrice);
+    $this->assertInstanceOf(Price::class, $buyingPrice);
+    $this->assertSame((string) $priceable_item->id, $buyingPrice->priceable_id);
+    $this->assertSame(22200, $buyingPrice->amount);
+    $this->assertNotNull($buyingPrice->activated_at);
+});
+
 test('the effectiveAt scope can return the correct price', function() {
     $priceable_item = new PriceableItem(['id' => 1234]);
 
