@@ -26,7 +26,7 @@
         }
     ],
     "require": {
-        "whitecube/php-prices": "^3.0",
+        "whitecube/php-prices": "^3.0|^4.0",
         "illuminate/support": "^8.0|^9.0|^10.0|^11.0"
     },
     "autoload": {
