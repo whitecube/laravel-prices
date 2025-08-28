@@ -22,12 +22,12 @@ class Price extends Model
     ];
 
     public function __construct(
-        array $arguments = null,
-        int|string|float $amount = null,
-        int $minor = null,
-        string $currency = null,
-        string $type = null,
-        DateTime $activated_at = null
+        ?array $arguments = null,
+        null|int|string|float $amount = null,
+        ?int $minor = null,
+        ?string $currency = null,
+        ?string $type = null,
+        ?DateTime $activated_at = null
     ) {
         if (! is_null($arguments) && $arguments !== []) {
             return parent::__construct($arguments);

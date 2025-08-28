@@ -62,12 +62,12 @@ trait HasPrices
      * @return static
      */
     public function setPrice(
-        array $arguments = null,
-        int|string|float $amount = null,
-        int $minor = null,
-        string $currency = null,
-        string $type = null,
-        DateTime $activated_at = null
+        ?array $arguments = null,
+        null|int|string|float $amount = null,
+        ?int $minor = null,
+        ?string $currency = null,
+        ?string $type = null,
+        ?DateTime $activated_at = null
     ): static
     {
         $model = config('prices.model');
